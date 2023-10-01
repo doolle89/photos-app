@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("app.cash.sqldelight")
 }
 
 kotlin {
@@ -23,6 +24,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = extra["ktor.version"] as String
+        val sqlDelightVersion = extra["sqlDelight.version"] as String
 
         val commonMain by getting {
             dependencies {
@@ -39,6 +41,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
+                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0")
+
                 implementation("media.kamel:kamel-image:0.8.2")
             }
         }
@@ -51,6 +55,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
+                implementation("app.cash.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
         val iosX64Main by getting
@@ -64,6 +70,7 @@ kotlin {
 
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
             }
         }
         val desktopMain by getting {
@@ -71,6 +78,7 @@ kotlin {
                 implementation(compose.desktop.common)
 
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
+                implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
             }
         }
     }
@@ -94,4 +102,14 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("com.example.data.local.database")
+            generateAsync.set(true)
+        }
+    }
+    linkSqlite.set(true)
 }
