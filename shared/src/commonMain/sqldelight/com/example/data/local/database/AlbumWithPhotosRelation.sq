@@ -1,0 +1,7 @@
+CREATE TABLE AlbumWithPhotosRelation (
+    albumId TEXT NOT NULL,
+    photoId TEXT NOT NULL,
+    PRIMARY KEY(albumId, photoId),
+    FOREIGN KEY(albumId) REFERENCES AlbumDbModel(id),
+    FOREIGN KEY(photoId) REFERENCES PhotoDbModel(id)
+);

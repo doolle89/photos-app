@@ -8,9 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
+import io.kamel.core.utils.cacheControl
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.http.CacheControl
 import io.ktor.http.Url
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 
 @Composable
 fun AsyncImage(
@@ -27,7 +32,14 @@ fun AsyncImage(
     animationSpec: FiniteAnimationSpec<Float>? = null
 ) {
     KamelImage(
-        resource = asyncPainterResource(data = Url(url)),
+        resource = asyncPainterResource(data = Url(url)) {
+            coroutineContext = Job() + Dispatchers.IO
+
+            // Customizes HTTP request
+            requestBuilder {
+                cacheControl(CacheControl.MaxAge(10000))
+            }
+        },
         contentDescription = contentDescription,
         modifier = modifier,
         alignment = alignment,
@@ -38,5 +50,12 @@ fun AsyncImage(
         onFailure = onFailure,
         contentAlignment = contentAlignment,
         animationSpec = animationSpec
+    )
+}
+
+expect object AsyncImageConfiguration {
+    @Composable
+    fun CompositionLocalProvider(
+        block: @Composable () -> Unit
     )
 }

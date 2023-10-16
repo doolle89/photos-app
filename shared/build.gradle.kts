@@ -40,8 +40,11 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0")
+
+                implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
+                implementation("app.cash.sqldelight:primitive-adapters:$sqlDelightVersion")
 
                 implementation("media.kamel:kamel-image:0.8.2")
             }
@@ -111,5 +114,4 @@ sqldelight {
             generateAsync.set(true)
         }
     }
-    linkSqlite.set(true)
 }

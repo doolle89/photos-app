@@ -7,38 +7,37 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import com.example.data.RepositoryTemp
-import com.example.data.remote.model.Album
-import com.example.data.remote.model.Photo
+import com.example.data.Repository
 import com.example.ui.AlbumUrls
 import com.example.ui.view.AsyncImage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Composable
 fun GalleryScreen() {
-    var album by remember { mutableStateOf<Album?>(null) }
     LaunchedEffect(Unit) {
-        val repository = RepositoryTemp()
-        album = repository.getAlbum(AlbumUrls.albumUrl)
+        GalleryScreenViewModel.fetchAlbum()
     }
-    album?.let { Album(it) }
+
+    val albumUiState by GalleryScreenViewModel.albumUiState.collectAsState(null)
+    Album(albumUiState)
 }
 
 @Composable
 fun Album(
-    album: Album
+    album: GalleryAlbumUiState?
 ) {
-    album.photos?.let { PhotoGrid(it.map { it.toGalleryPhoto() }) }
+    album?.photos?.let { PhotoGrid(it) }
 }
 
 @Composable
 fun PhotoGrid(
-    photos: List<GalleryPhoto>
+    photos: List<GalleryPhotoUiState>
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),

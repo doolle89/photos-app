@@ -1,0 +1,20 @@
+import kotlin.Boolean;
+
+CREATE TABLE PhotoDbModel (
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT,
+    description TEXT,
+    mimeType TEXT,
+    capturedDate INTEGER DEFAULT 0,
+    content TEXT,
+    width INTEGER DEFAULT 0,
+    height INTEGER DEFAULT 0,
+    orientation TEXT,
+    fileUrl TEXT,
+    thumbnailUrl TEXT,
+    videoUrl TEXT,
+    livePhotoUrl TEXT,
+    livePhotoType TEXT,
+    hidden INTEGER AS Boolean DEFAULT 0,
+    excluded INTEGER AS Boolean DEFAULT 0
+);

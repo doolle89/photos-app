@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Photo(
+data class PhotoApiModel(
     val id: String? = null,
     val md5: String? = null,
     val username: String? = null,
@@ -35,8 +35,8 @@ data class Photo(
     val focalLength: String? = null,
     val exposure: String? = null,
     val adultContent: Boolean = false,
-    val geoAddressRaw: GeoAddressRaw? = null,
-    val rawExif: RawExif? = null,
+    val geoAddressRaw: GeoAddressRawApiModel? = null,
+    val rawExif: RawExifApiModel? = null,
     val clusterHostMapId: String? = null,
     val excludeInfo: String? = null,
     @SerialName("file_url") val fileUrl: String? = null,
@@ -50,6 +50,6 @@ data class Photo(
     val tempId: String? = null,
     val publicId: String? = null,
     val nsfwScore: Int = 0,
-    val livePhoto: LivePhoto? = null,
+    val livePhoto: LivePhotoApiModel? = null,
     val timestamp: String? = null
 )

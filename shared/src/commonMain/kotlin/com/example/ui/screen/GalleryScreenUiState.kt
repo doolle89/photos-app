@@ -1,26 +1,24 @@
 package com.example.ui.screen
 
-import com.example.data.remote.model.Photo
-
-data class GalleryAlbum(
+data class GalleryAlbumUiState(
     val id: String,
     val title: String? = null,
    // val createdDate: Date,
-    val photos: List<GalleryPhoto>
+    val photos: List<GalleryPhotoUiState>
 )
 
-sealed interface GalleryItem {
+sealed interface GalleryItemUiState {
     val id: String
     val positionId: Long get() = id.hashCode().toLong()
 }
 
-data class GalleryDay(
+data class GalleryDayUiState(
     override val id: String,
     val title: String? = null,
-    val photos: List<GalleryPhoto>
-) : GalleryItem
+    val photos: List<GalleryPhotoUiState>
+) : GalleryItemUiState
 
-data class GalleryPhoto(
+data class GalleryPhotoUiState(
     override val id: String,
     val title: String? = null,
     //val capturedDate: Date,
@@ -31,7 +29,7 @@ data class GalleryPhoto(
     val thumbnailUrl: String? = null,
     val livePhotoUrl: String? = null,
     val videoUrl: String? = null
-) : GalleryItem {
+) : GalleryItemUiState {
     val thumbnailUrlSmall get() = "${thumbnailUrl}.s"
     val thumbnailUrlMedium get() = "${thumbnailUrl}.m"
     val thumbnailUrlLarge get() = "${thumbnailUrl}.l"
@@ -41,21 +39,4 @@ data class GalleryPhoto(
     companion object {
        // private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
     }
-}
-
-
-
-fun Photo.toGalleryPhoto(): GalleryPhoto {
-    return GalleryPhoto(
-        id = this.id ?: "",
-        title = this.title,
-        //capturedDate = Date(this.capturedDate),
-        width = this.width,
-        height = this.height,
-        hidden = this.hidden,
-        fileUrl = this.fileUrl,
-        thumbnailUrl = this.thumbnailUrl,
-        livePhotoUrl = this.livePhotoUrl,
-        videoUrl = this.videoUrl
-    )
 }

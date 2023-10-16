@@ -1,0 +1,12 @@
+CREATE TABLE AlbumDbModel (
+    id TEXT NOT NULL PRIMARY KEY,
+    uri TEXT NOT NULL,
+    username TEXT,
+    title TEXT,
+    description TEXT,
+    createdDate INTEGER DEFAULT 0,
+    lastModified INTEGER DEFAULT 0,
+    meta TEXT,
+    coverPhoto TEXT,
+    total INTEGER DEFAULT 0
+);

@@ -1,6 +1,6 @@
 package com.example.data.remote
 
-import com.example.data.remote.model.Album
+import com.example.data.remote.model.AlbumApiModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,7 +17,7 @@ class ApiClient {
         }
     }
 
-    suspend fun getAlbum(shareUri: String): Album {
+    suspend fun getAlbum(shareUri: String): AlbumApiModel {
         val response = client.get("https://api.jottacloud.com/photos/v1/public/$shareUri")
         return response.body()
     }

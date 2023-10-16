@@ -1,6 +1,6 @@
 package com.example.data.remote
 
-import com.example.data.remote.model.Album
+import com.example.data.remote.model.AlbumApiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -21,7 +21,7 @@ class ApiService(
 
     private val apiClient = ApiClient.create()
 
-    override suspend fun getAlbum(shareUri: String): Album = withContext(dispatcher) {
+    override suspend fun getAlbum(shareUri: String): AlbumApiModel = withContext(dispatcher) {
         apiClient.getAlbum(shareUri)
     }
 }

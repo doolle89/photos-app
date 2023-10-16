@@ -1,0 +1,74 @@
+
+insert:
+INSERT OR REPLACE INTO PhotoDbModel(
+    id, title, description, mimeType, capturedDate, content, width, height, orientation, fileUrl, thumbnailUrl,
+    videoUrl, livePhotoUrl, livePhotoType, hidden, excluded
+)
+VALUES (
+    :id, :title, :description, :mimeType, :capturedDate, :content, :width, :height, :orientation, :fileUrl, :thumbnailUrl,
+    :videoUrl, :livePhotoUrl, :livePhotoType, :hidden, :excluded
+);
+
+upsert {
+    UPDATE PhotoDbModel
+    SET title = :title,
+        description = :description,
+        mimeType = :mimeType,
+        capturedDate = :capturedDate,
+        content = :content,
+        width = :width,
+        height = :height,
+        orientation = :orientation,
+        fileUrl = :fileUrl,
+        thumbnailUrl = :thumbnailUrl,
+        videoUrl = :videoUrl,
+        livePhotoUrl = :livePhotoUrl,
+        livePhotoType = :livePhotoType,
+        hidden = :hidden,
+        excluded = :excluded
+    WHERE id = :id;
+
+    INSERT OR IGNORE INTO PhotoDbModel(
+        id, title, description, mimeType, capturedDate, content, width, height, orientation, fileUrl, thumbnailUrl,
+        videoUrl, livePhotoUrl, livePhotoType, hidden, excluded
+    )
+    VALUES (
+        :id, :title, :description, :mimeType, :capturedDate, :content, :width, :height, :orientation, :fileUrl, :thumbnailUrl,
+        :videoUrl, :livePhotoUrl, :livePhotoType, :hidden, :excluded
+    );
+}
+
+deleteAll:
+DELETE
+FROM PhotoDbModel;
+
+delete:
+DELETE
+FROM PhotoDbModel
+WHERE id = :id;
+
+selectAll:
+SELECT *
+FROM PhotoDbModel;
+
+selectPhoto:
+SELECT *
+FROM PhotoDbModel
+WHERE id = :id;
+
+
+
+addPhotoToAlbum:
+INSERT OR IGNORE INTO AlbumWithPhotosRelation(albumId, photoId)
+VALUES (:albumId, :photoId);
+
+removePhotoFromAlbum:
+DELETE
+FROM AlbumWithPhotosRelation
+WHERE albumId = :albumId AND photoId = :photoId;
+
+selectAllPhotosInAlbum:
+SELECT PhotoDbModel.*
+FROM PhotoDbModel
+INNER JOIN AlbumWithPhotosRelation ON PhotoDbModel.id = AlbumWithPhotosRelation.photoId
+WHERE AlbumWithPhotosRelation.albumId = :albumId;

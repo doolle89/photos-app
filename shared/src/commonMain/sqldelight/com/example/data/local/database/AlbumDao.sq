@@ -1,0 +1,51 @@
+
+insert:
+INSERT OR REPLACE INTO AlbumDbModel(id, uri, username, title, description, createdDate, lastModified, meta, coverPhoto, total)
+VALUES (:id, :uri, :username, :title, :description, :createdDate, :lastModified, :meta, :coverPhoto, :total);
+
+upsert {
+    UPDATE AlbumDbModel
+    SET uri = :uri,
+        username = :username,
+        title = :title,
+        description = :description,
+        createdDate = :createdDate,
+        lastModified = :lastModified,
+        meta = :meta,
+        coverPhoto = :coverPhoto,
+        total = :total
+    WHERE id = :id;
+
+    INSERT OR IGNORE INTO AlbumDbModel(id, uri, username, title, description, createdDate, lastModified, meta, coverPhoto, total)
+    VALUES (:id, :uri, :username, :title, :description, :createdDate, :lastModified, :meta, :coverPhoto, :total);
+}
+
+deleteAll:
+DELETE
+FROM AlbumDbModel;
+
+delete:
+DELETE
+FROM AlbumDbModel
+WHERE id = :id;
+
+selectAll:
+SELECT *
+FROM AlbumDbModel;
+
+selectAlbumById:
+SELECT *
+FROM AlbumDbModel
+WHERE id = :id;
+
+selectAlbumByUri:
+SELECT *
+FROM AlbumDbModel
+WHERE uri = :uri;
+
+
+
+removeAllPhotosFromAlbum:
+DELETE
+FROM AlbumWithPhotosRelation
+WHERE albumId = :albumId;
