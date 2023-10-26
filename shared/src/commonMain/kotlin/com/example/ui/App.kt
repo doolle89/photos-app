@@ -1,72 +1,20 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
 package com.example.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import com.example.data.RepositoryTemp
-import com.example.ui.screen.GalleryScreen
+import cafe.adriel.voyager.navigator.CurrentScreen
+import cafe.adriel.voyager.navigator.Navigator
+import com.example.ui.screen.timeline.GalleryScreen
 import com.example.ui.view.AsyncImageConfiguration
-import getPlatformName
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
 fun App() {
     MaterialTheme {
         AsyncImageConfiguration.CompositionLocalProvider() {
-            GalleryScreen()
-        }
-    }
-}
-
-@Composable
-fun HelloWorld() {
-    var greetingText by remember { mutableStateOf("Hello, World!") }
-    var showImage by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(
-            onClick = {
-                greetingText = "Hello, ${getPlatformName()}"
-                showImage = !showImage
+            Navigator(GalleryScreen) { navigator ->
+                CurrentScreen()
             }
-        ) {
-            Text(greetingText)
-        }
-        val coroutineScope = rememberCoroutineScope()
-        var albumText by remember { mutableStateOf("") }
-        Button(
-            onClick = {
-                coroutineScope.launch {
-                    val repository = RepositoryTemp()
-                    val album = repository.getAlbum(AlbumUrls.albumUrl)
-                    albumText = album.toString()
-                }
-            }
-        ) {
-            Text("Load album")
-        }
-        Text(albumText)
-        AnimatedVisibility(showImage) {
-            Image(
-                painterResource("compose-multiplatform.xml"),
-                null
-            )
         }
     }
 }

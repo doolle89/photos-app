@@ -71,4 +71,5 @@ selectAllPhotosInAlbum:
 SELECT PhotoDbModel.*
 FROM PhotoDbModel
 INNER JOIN AlbumWithPhotosRelation ON PhotoDbModel.id = AlbumWithPhotosRelation.photoId
-WHERE AlbumWithPhotosRelation.albumId = :albumId;
+WHERE AlbumWithPhotosRelation.albumId = :albumId
+ORDER BY PhotoDbModel.capturedDate DESC;

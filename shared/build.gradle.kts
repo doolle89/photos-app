@@ -25,6 +25,7 @@ kotlin {
     sourceSets {
         val ktorVersion = extra["ktor.version"] as String
         val sqlDelightVersion = extra["sqlDelight.version"] as String
+        val voyagerVersion = extra["voyager.version"] as String
 
         val commonMain by getting {
             dependencies {
@@ -36,15 +37,20 @@ kotlin {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-
                 implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
                 implementation("app.cash.sqldelight:primitive-adapters:$sqlDelightVersion")
+
+                implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
 
                 implementation("media.kamel:kamel-image:0.8.2")
             }
