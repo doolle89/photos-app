@@ -1,9 +1,7 @@
 package com.example.ui.view
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
 import io.kamel.core.config.DefaultCacheSize
 import io.kamel.core.config.DefaultHttpCacheSize
 import io.kamel.core.config.KamelConfig
@@ -12,10 +10,10 @@ import io.kamel.core.config.httpFetcher
 import io.kamel.core.config.takeFrom
 import io.kamel.image.config.Default
 import io.kamel.image.config.LocalKamelConfig
+import io.kamel.image.config.batikSvgDecoder
 import io.kamel.image.config.imageBitmapDecoder
 import io.kamel.image.config.imageVectorDecoder
 import io.kamel.image.config.resourcesFetcher
-import io.kamel.image.config.resourcesIdMapper
 import io.kamel.image.config.svgDecoder
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.logging.LogLevel
@@ -24,20 +22,21 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.http.isSuccess
 
+
 actual object AsyncImageConfiguration {
     @Composable
     actual fun CompositionLocalProvider(
         block: @Composable () -> Unit
     ) {
-        val context: Context = LocalContext.current
         val customKamelConfig = KamelConfig {
             // Copies the default implementation if needed
             takeFrom(KamelConfig.Default)
 
-            // Available only on Android.
-            resourcesFetcher(context)
-            // Available only on Android.
-            resourcesIdMapper(context)
+            // Available only on Desktop.
+            resourcesFetcher()
+            // Available only on Desktop.
+            // An alternative svg decoder
+            batikSvgDecoder()
 
             // 100 by default
             imageBitmapCacheSize = 500

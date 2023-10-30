@@ -7,12 +7,6 @@ import kotlinx.coroutines.launch
 actual fun getPlatformName(): String = "iOS"
 
 fun MainViewController() = ComposeUIViewController {
-    initDatabase()
+    DatabaseManager.initDatabase()
     App()
-}
-
-fun initDatabase() {
-    GlobalScope.launch {
-        DatabaseManager.initDatabase()
-    }
 }

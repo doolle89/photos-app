@@ -1,5 +1,6 @@
 package com.example.ui.screen.timeline
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,27 +18,38 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.example.ui.view.AsyncImage
 
 
-object GalleryScreen : Screen {
+class TimelinePhotoCollectionScreen(
+    private val onPhotoClick: (String) -> Unit
+) : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { TimelineScreenModel() }
-        val albumUiState by screenModel.uiState.collectAsState(null)
-        TimelineAlbum(albumUiState?.state)
+        val screenModel = rememberScreenModel { TimelinePhotoCollectionScreenModel() }
+        val timelinePhotoCollectionUiStateUiState by screenModel.uiState.collectAsState()
+
+        TimelinePhotoCollection(
+            timelinePhotoCollectionUiState = timelinePhotoCollectionUiStateUiState.state,
+            onPhotoClick = onPhotoClick
+        )
     }
 }
 
 @Composable
-private fun TimelineAlbum(
-    album: TimelineUiState?
+private fun TimelinePhotoCollection(
+    timelinePhotoCollectionUiState: TimelinePhotoCollectionUiState,
+    onPhotoClick: (String) -> Unit
 ) {
-    album?.items?.let { TimelinePhotoGrid(it) }
+    TimelinePhotoGrid(
+        timelineItems = timelinePhotoCollectionUiState.items,
+        onPhotoClick = onPhotoClick
+    )
 }
 
 @Composable
 private fun TimelinePhotoGrid(
     timelineItems: List<TimelineItem>,
-    gridCellsCount: Int = 3
+    gridCellsCount: Int = 3,
+    onPhotoClick: (String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(gridCellsCount),
@@ -45,6 +57,12 @@ private fun TimelinePhotoGrid(
     ) {
         items(
             items = timelineItems,
+            key = { item ->
+                when(item) {
+                    is TimelineDateItem -> item.title
+                    is TimelinePhotoItem -> item.id
+                }
+            },
             span = { item ->
                 when (item) {
                     is TimelineDateItem -> GridItemSpan(gridCellsCount)
@@ -63,7 +81,9 @@ private fun TimelinePhotoGrid(
                         AsyncImage(
                             url = item.thumbnailUrlSmall,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.aspectRatio(ratio = 1f)
+                            modifier = Modifier
+                                .aspectRatio(ratio = 1f)
+                                .clickable { onPhotoClick(item.id) }
                         )
                     }
                 }

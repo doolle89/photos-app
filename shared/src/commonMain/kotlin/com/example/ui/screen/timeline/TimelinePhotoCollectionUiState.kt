@@ -2,7 +2,7 @@ package com.example.ui.screen.timeline
 
 import kotlinx.datetime.LocalDateTime
 
-data class TimelineUiState(
+data class TimelinePhotoCollectionUiState(
     val id: String? = null,
     val title: String? = null,
     val created: LocalDateTime? = null,

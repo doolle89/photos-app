@@ -6,19 +6,19 @@ import com.example.ui.AlbumUrls
 import com.example.ui.util.screenmodel.UiStateScreenModel
 import kotlinx.coroutines.launch
 
-class TimelineScreenModel(
+class TimelinePhotoCollectionScreenModel(
     private val repository: Repository = Repository.getInstance()
-) : UiStateScreenModel<TimelineUiState>(TimelineUiState()) {
+) : UiStateScreenModel<TimelinePhotoCollectionUiState>(TimelinePhotoCollectionUiState()) {
     private val albumId = AlbumUrls.albumUrl
 
     init {
         updateState(repository.observeAlbum(albumId)) { oldState, album ->
-            album?.toTimelineUiState() ?: oldState
+            album?.toTimelinePhotoCollectionUiState() ?: oldState
         }
         fetchAlbum()
     }
 
-    fun fetchAlbum() {
+    private fun fetchAlbum() {
         screenModelScope.launch {
             repository.fetchAlbum(AlbumUrls.albumUrl)
         }

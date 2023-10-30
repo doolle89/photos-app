@@ -23,6 +23,7 @@ kotlin {
     }
 
     sourceSets {
+        val coroutinesVersion = extra["coroutines.version"] as String
         val ktorVersion = extra["ktor.version"] as String
         val sqlDelightVersion = extra["sqlDelight.version"] as String
         val voyagerVersion = extra["voyager.version"] as String
@@ -35,7 +36,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
@@ -61,7 +62,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.12.0")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
@@ -86,8 +87,12 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.common)
 
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
+
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
+
+                implementation("app.cash.sqldelight:sqlite-driver:$sqlDelightVersion")
             }
         }
     }
@@ -116,8 +121,8 @@ android {
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("com.example.data.local.database")
-            generateAsync.set(true)
+            packageName = "com.example.data.local.database"
+            generateAsync = true
         }
     }
 }

@@ -31,26 +31,28 @@ fun AsyncImage(
     contentAlignment: Alignment = Alignment.Center,
     animationSpec: FiniteAnimationSpec<Float>? = null
 ) {
-    KamelImage(
-        resource = asyncPainterResource(data = Url(url)) {
-            coroutineContext = Job() + Dispatchers.IO
+    AsyncImageConfiguration.CompositionLocalProvider {
+        KamelImage(
+            resource = asyncPainterResource(data = Url(url)) {
+                coroutineContext = Job() + Dispatchers.IO
 
-            // Customizes HTTP request
-            requestBuilder {
-                cacheControl(CacheControl.MaxAge(10000))
-            }
-        },
-        contentDescription = contentDescription,
-        modifier = modifier,
-        alignment = alignment,
-        contentScale = contentScale,
-        alpha = alpha,
-        colorFilter = colorFilter,
-        onLoading = onLoading,
-        onFailure = onFailure,
-        contentAlignment = contentAlignment,
-        animationSpec = animationSpec
-    )
+                // Customizes HTTP request
+                requestBuilder {
+                    cacheControl(CacheControl.MaxAge(10000))
+                }
+            },
+            contentDescription = contentDescription,
+            modifier = modifier,
+            alignment = alignment,
+            contentScale = contentScale,
+            alpha = alpha,
+            colorFilter = colorFilter,
+            onLoading = onLoading,
+            onFailure = onFailure,
+            contentAlignment = contentAlignment,
+            animationSpec = animationSpec
+        )
+    }
 }
 
 expect object AsyncImageConfiguration {

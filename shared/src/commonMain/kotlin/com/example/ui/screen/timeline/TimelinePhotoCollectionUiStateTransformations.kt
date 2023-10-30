@@ -5,7 +5,7 @@ import com.example.data.model.Photo
 import com.example.ui.util.toLocalDateTime
 
 
-fun Album.toTimelineUiState(): TimelineUiState {
+fun Album.toTimelinePhotoCollectionUiState(): TimelinePhotoCollectionUiState {
     val datePhotoMap = mutableMapOf<String, MutableList<TimelinePhotoItem>>()
     photos.forEach { photo ->
         photo.toTimelinePhotoItemUiState().let { timelinePhotoItem ->
@@ -15,7 +15,7 @@ fun Album.toTimelineUiState(): TimelineUiState {
     val timelineItems = datePhotoMap.flatMap {
         listOf(TimelineDateItem(it.key), *it.value.toTypedArray())
     }
-    return TimelineUiState(
+    return TimelinePhotoCollectionUiState(
         id = id,
         title = title,
         created = createdDate.toLocalDateTime(),
